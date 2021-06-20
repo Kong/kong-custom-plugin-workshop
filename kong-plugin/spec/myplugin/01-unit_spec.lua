@@ -41,5 +41,30 @@ describe(PLUGIN_NAME .. ": (schema)", function()
     assert.is_falsy(ok)
   end)
 
+  it("valid value for remove_request_headers", function()
+    local ok, err = validate({
+        remove_request_headers = {"valid-header"},
+      })
+
+    assert.is_nil(err)
+    assert.is_truthy(ok)
+  end)
+
+
+  it("does not accept invalid value for remove_request_headers", function()
+    local ok, err = validate({
+        remove_request_headers = {"they-@-#"},
+      })
+
+    assert.is_same({
+      ["config"] = {
+        ["remove_request_headers"] = {
+          [1] = "bad header name 'they-@-#', allowed characters are A-Z, a-z, 0-9, '_', and '-'"
+        }
+      }
+    }, err)
+    assert.is_falsy(ok)
+  end)
+
 
 end)

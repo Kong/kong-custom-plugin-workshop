@@ -69,6 +69,15 @@ function plugin:access(plugin_conf)
   kong.log.inspect(plugin_conf)   -- check the logs for a pretty-printed config!
   kong.service.request.set_header(plugin_conf.request_header, "this is on a request")
 
+  -- Remove header(s)
+  for _, name, value in iter(conf.remove_request_headers) do
+    name = name:lower()
+    if headers[name] then
+      headers[name] = nil
+      headers_to_remove[name] = true
+    end
+  end
+
 end --]]
 
 
