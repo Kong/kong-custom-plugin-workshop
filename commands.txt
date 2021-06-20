@@ -20,5 +20,4 @@ http :8001/services/example_service/plugins \
 
 http :8000/mock
 
-
 iptables -A INPUT -i docker0 -j ACCEPT
