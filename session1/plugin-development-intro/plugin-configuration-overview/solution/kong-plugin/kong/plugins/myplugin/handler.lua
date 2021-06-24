@@ -21,34 +21,6 @@ local plugin = {
 }
 
 
-local function iter(config_array)
-  return function(config_array, i, previous_name, previous_value)
-    i = i + 1
-    local current_pair = config_array[i]
-    if current_pair == nil then -- n + 1
-      return nil
-    end
-
-    local current_name, current_value = current_pair:match("^([^:]+):*(.-)$")
-
-    if current_value == "" then
-      return i, current_name
-    end
-
-    local res, err = param_value(current_value, config_array)
-    if err then
-      return error("[request-transformer] failed to render the template " ..
-                   current_value .. ", error:" .. err)
-    end
-
-    kong.log.debug("[request-transformer] template `", current_value,
-                   "` rendered to `", res, "`")
-
-    return i, current_name, res
-  end, config_array, 0
-end
-
-
 -- do initialization here, any module level code runs in the 'init_by_lua_block',
 -- before worker processes are forked. So anything you add here will run once,
 -- but be available in all workers.
@@ -102,7 +74,7 @@ function plugin:access(plugin_conf)
   -- Remove header(s)
   local headers = get_headers()
 
-  for _, name, value in iter(plugin_conf.remove_request_headers) do
+  for _, name in pairs(plugin_conf.remove_request_headers) do
     name = name:lower()
     if headers[name] then
       headers[name] = nil

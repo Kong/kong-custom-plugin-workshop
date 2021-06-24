@@ -19,7 +19,7 @@ Start Kong and Database containers using docker-compose, before docker-compose u
 
 ## Add a Route to the Service
 
-    http POST :8001/services/example-service/routes name=example-route paths:='["/"]'
+    http POST :8001/services/example-service/routes name=example-route paths:='["/transform"]'
 
 ## Add Plugin to the Service
 
@@ -29,5 +29,9 @@ This will enable request transformer plugin
 
 ## Test
 
-    http :8000/anything custId==200 a==100 #query string
-    http :8000/anything a==200 custId=200 another=abc #body
+    http :8000/transform/anything custId==200 a==100 #query string
+    http :8000/transform/anything a==200 custId=200 another=abc #body
+
+## Cleanup
+
+    docker-compose down --volumes
