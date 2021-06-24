@@ -107,3 +107,6 @@ is equivalent to
 ```
 
 See pongo expose --help for the ports.
+
+For latest information refer pango repo
+https://github.com/Kong/kong-pongo/

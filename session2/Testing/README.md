@@ -4,5 +4,5 @@ Start Kong and Database containers using docker-compose, before docker-compose u
 
 ```shell
     set -a; source .env; set +a
-    cd kong-plugin && pongo run -v -o gtest ./spec/myplugin/01-unit_spec.lua
+    cd kong-plugin && pongo run -v -o gtest
 ```

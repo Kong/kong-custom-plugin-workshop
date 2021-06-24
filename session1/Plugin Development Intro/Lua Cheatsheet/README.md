@@ -19,7 +19,11 @@ print [[a multi-line    <-->     print([[a multi-line
  message]]                        message]])
 f{x=10, y=20}           <-->     f({x=10, y=20})
 type{}                  <-->     type({})
-Tables / arrays
+```
+
+## Tables / arrays
+
+```lua
 t = {}
 t = { a = 1, b = 2 }
 t.a = function() ... end
@@ -31,7 +35,11 @@ t.hello
 array = { "a", "b", "c", "d" }
 print(array[2])       -- "b" (one-indexed)
 print(#array)         -- 4 (length)
-Loops
+```
+
+## Loops
+
+```lua
 while condition do
 end
 
@@ -296,4 +304,5 @@ file:close()
 
 ## Reference
 
-http://www.lua.org/pil/13.html http://lua-users.org/wiki/ObjectOrientedProgramming
+http://www.lua.org/pil/13.html
+http://lua-users.org/wiki/ObjectOrientedProgramming
