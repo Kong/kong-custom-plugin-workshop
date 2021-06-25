@@ -28,6 +28,7 @@ local schema = {
 
           { remove_request_headers = { -- adding new field
             type = "array",
+            required = true,
             elements = typedefs.header_name}},
         },
         entity_checks = {

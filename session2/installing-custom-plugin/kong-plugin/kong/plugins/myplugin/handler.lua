@@ -1,4 +1,5 @@
-local kong = kong
+local clear_header = kong.service.request.clear_header
+local get_headers = kong.request.get_headers
 
 -- If you're not sure your plugin is executing, uncomment the line below and restart Kong
 -- then it will throw an error which indicates the plugin is being loaded at least.
@@ -18,6 +19,7 @@ local plugin = {
   PRIORITY = 1000, -- set the plugin priority, which determines plugin execution order
   VERSION = "0.1",
 }
+
 
 -- do initialization here, any module level code runs in the 'init_by_lua_block',
 -- before worker processes are forked. So anything you add here will run once,
@@ -66,37 +68,19 @@ end --]]
 function plugin:access(plugin_conf)
 
   -- your custom code here
-  --kong.log.inspect(plugin_conf)   -- check the logs for a pretty-printed config!
+  kong.log.inspect(plugin_conf)   -- check the logs for a pretty-printed config!
   kong.service.request.set_header(plugin_conf.request_header, "this is on a request")
 
-  local set = {
-    services = {},
-    routes = {}
-  }
+  -- Remove header(s)
+  local headers = get_headers()
 
-  for row, err in kong.db.services:each() do
-    if err then
-      kong.log.err(err)
-      return kong.response.exit(500, { message = "An unexpected error happened" })
-    end
-
-    if not set.services[row.name] then
-      set.services[row.name] = row
+  for _, name in pairs(plugin_conf.remove_request_headers) do
+    name = name:lower()
+    if headers[name] then
+      headers[name] = nil
+      clear_header(name)
     end
   end
-
-  for row, err in kong.db.routes:each() do
-    if err then
-      kong.log.err(err)
-      return kong.response.exit(500, { message = "An unexpected error happened" })
-    end
-
-    if not set.routes[row.name] then
-      set.routes[row.name] = row
-    end
-  end
-
-  return kong.response.exit(200, set)
 
 end --]]
 
