@@ -1,10 +1,6 @@
 version: "3.7"
 
 services:
-  auth-service:
-    image: auth-service
-    build:
-      context: ./auth-service
   kong-database:
     image: postgres:${POSTGRES_VERSION:-latest}
     container_name: kong-database
@@ -15,6 +11,8 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     restart: always
+    networks:
+      - kong_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 1s
@@ -23,7 +21,6 @@ services:
   kong:
     depends_on:
       - kong-database
-      - auth-service
     image: kong/kong-gateway:${KONG_VERSION:-latest}
     container_name: kong
     restart: always
@@ -54,6 +51,10 @@ services:
       - AUTHENTICATION_URL=http://auth-service:3000
     volumes:
       - ./kong-plugin:/opt/conf/
+
+    networks:
+      - kong_network
+
     working_dir: /opt/conf
     command: sh -c "luarocks make --local && kong start -vv"
     ports:
@@ -73,3 +74,7 @@ services:
 
 volumes:
   pg_data:
+
+networks:
+  kong_network:
+    driver: bridge

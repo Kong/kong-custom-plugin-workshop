@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  auth-service:
+    image: auth-service
+    build:
+      context: ./auth-service
+    networks:
+      - kong_network
+    environment:
+      - TOKENS=token1,token2,token3
+      - CUSTOMERS=customer1,customer2,customer3
+    ports:
+      - 3000:3000
+networks:
+  security_kong_network:
+    external: true

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const config = require("../config.json");
+const config = require("../config");
 
 /* token validation. */
 router.get("/token", function(req, res, next) {
