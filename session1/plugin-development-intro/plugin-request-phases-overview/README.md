@@ -9,19 +9,19 @@ Clone the Kong plugin template: https://github.com/Kong/kong-plugin.git
     cd kong-plugin
 ```
 
-## bring up pongo dependencies
+## Bring up pongo dependencies
 
 ```shell
 pongo up
 ```
 
-## expose services
+## Expose services
 
 ```shell
 pongo expose
 ```
 
-## create a Kong container and attach a shell
+## Create a Kong container and attach a shell
 
 ```shell
 pongo shell
@@ -29,7 +29,7 @@ pongo shell
 
 The following commands should be run from within the Kong shell
 
-## boostrap the database
+## Boostrap the database
 
 ```shell
 kong migrations bootstrap --force
