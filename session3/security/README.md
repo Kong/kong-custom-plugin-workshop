@@ -48,5 +48,5 @@ This will enable myplugin
 ## Cleanup
 
 ```shell
-    docker-compose down --volumes
+    docker-compose -f docker-compose-kong.yml -f docker-compose-auth-service.yml down -v
 ```
