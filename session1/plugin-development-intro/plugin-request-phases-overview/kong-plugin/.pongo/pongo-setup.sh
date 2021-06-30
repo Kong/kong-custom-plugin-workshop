@@ -1,0 +1,2 @@
+export KONG_PLUGINS=bundled,myplugin
+luarocks make
