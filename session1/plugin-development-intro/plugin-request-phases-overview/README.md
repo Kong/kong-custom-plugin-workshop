@@ -9,9 +9,11 @@ Clone the Kong plugin template: https://github.com/Kong/kong-plugin.git
     cd kong-plugin
 ```
 
+Below commands needs to be running inside plugin folder
+
 ### Dependency defaults
 
-Update `.pongo/pongorc` file to disable cassandra
+Update `.pongo/pongorc` to disable cassandra
 
 ```shell
 --no-cassandra
@@ -23,11 +25,11 @@ Update `.pongo/pongorc` file to disable cassandra
 pongo up
 ```
 
-To Specify different versions of the dependencies or image or license_data
+To specify different versions of the dependencies or image or license_data
 
 ```shell
-KONG_VERSION=1.3.x pongo up
-POSTGRES=10 KONG_IMAGE=kong-ee pongo up
+KONG_VERSION=2.3.x pongo up
+POSTGRES=10 KONG_VERSION=2.3.3.x pongo up
 POSTGRES=10 KONG_LICENSE_DATA=<your_license_data> pongo up
 ```
 
@@ -73,10 +75,48 @@ http -f :8001/services/example-service/plugins name=myplugin
 ## Test
 
 ```shell
-    http :8000/echo/anything
+http :8000/echo/anything
 ```
 
-You should see the sample headers added by the plugins to the HTTP request and response
+Response:
+
+```shell
+HTTP/1.1 200 OK
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Origin: *
+Bye-World: this is on the response
+Connection: keep-alive
+Content-Length: 556
+Content-Type: application/json
+Date: Wed, 30 Jun 2021 07:32:51 GMT
+Server: gunicorn/19.9.0
+Via: kong/2.4.1
+X-Kong-Proxy-Latency: 140
+X-Kong-Upstream-Latency: 568
+
+{
+    "args": {},
+    "data": "",
+    "files": {},
+    "form": {},
+    "headers": {
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate",
+        "Hello-World": "this is on a request",
+        "Host": "httpbin.org",
+        "User-Agent": "HTTPie/1.0.3",
+        "X-Amzn-Trace-Id": "Root=1-60dc1e23-332e478c63f3ca0551ffb795",
+        "X-Forwarded-Host": "localhost",
+        "X-Forwarded-Path": "/echo/anything",
+        "X-Forwarded-Prefix": "/echo"
+    },
+    "json": null,
+    "method": "GET",
+    "origin": "127.0.0.1, 223.196.173.146",
+    "url": "http://localhost/anything"
+}
+
+```
 
 # Add a log entry to each phase
 
@@ -102,7 +142,7 @@ kong reload
 # Test
 
 ```shell
-    http :8000/echo/anything
+http :8000/echo/anything
 ```
 
 Validate that you can see log entries for all the logs
@@ -118,5 +158,5 @@ exit
 Remove Pongo dependencies
 
 ```shell
-    pongo down
+pongo down
 ```
