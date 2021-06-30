@@ -18,14 +18,7 @@ local schema = {
             type = "array",
             required = true,
             elements = typedefs.header_name}},
-        },
-        entity_checks = {
-          -- add some validation rules across fields
-          -- the following is silly because it is always true, since they are both required
-          { at_least_one_of = { "request_header", "response_header" }, },
-          -- We specify that both header-names cannot be the same
-          { distinct = { "request_header", "response_header"} },
-        },
+        }
       },
     },
   },

@@ -1,52 +1,13 @@
-## Introduction
+## Problem Statement
 
-Start Kong, Database and Auth Service containers using docker-compose, before docker-compose up, we need to run database migrations
+Custom Authentication Security Lab
 
-```shell
-    docker-compose -f docker-compose-kong.yml run kong kong migrations bootstrap
-    docker-compose -f docker-compose-kong.yml -f docker-compose-auth-service.yml up -d --build
-```
+- Build a sample auth service and make it available on GitHub to download
+- Auth service will expose 2 endpoints
 
-## Verify whether containers are up or not
+  - first endpoint /auth/validate/token Authorization:'Bearer XXXXX') will validate the JWT token passed on the header as Authorization. The auth service should allow specifying what is allowed and what is not via configuration when starting it up
+  - second endpoint will validate custId query parameter (/auth/validate/customer Authorization:'Bearer XXXXX' custId="<name>")- The auth service should allow specifying what is allowed and what is not via configuration when starting it up
 
-```shell
-    docker ps
+- The API caller will send a request to Kong, passing a token and specifying a customerID as a query string param.
 
-    CONTAINER ID        IMAGE                                    COMMAND             CREATED             STATUS              PORTS                     NAMES
-    be4733068e81   kong/kong-gateway:2.3.3.2-alpine   "/docker-entrypoint.…"   4 seconds ago    Up 2 seconds (healthy)    0.0.0.0:8000-8004->8000-8004/tcp, :::8000-8004->8000-8004/tcp, 0.0.0.0:8443-8445->8443-8445/tcp, :::8443-8445->8443-8445/tcp, 8446-8447/tcp   kong
-    525c3dc73b92   postgres:13-alpine                 "docker-entrypoint.s…"   12 seconds ago   Up 11 seconds (healthy)   5432 tcp                                                                                                                                      kong-database
-```
-
-## Add a service
-
-```shell
-    http POST :8001/services name=example-service url=http://httpbin.org
-```
-
-## Add a Route to the Service
-
-```shell
-    http POST :8001/services/example-service/routes name=example-route paths:='["/echo"]'
-```
-
-## Add Plugin to the Service
-
-```shell
-    http -f POST :8001/services/example-service/plugins name=myplugin
-```
-
-This will enable myplugin
-
-## Test
-
-```shell
-    http :8000/echo/anything Authorization:token1 custId==customer1
-    http :8000/echo/anything Authorization:token2 custId==customer2
-    http :8000/echo/anything Authorization:token3 custId==customer3
-```
-
-## Cleanup
-
-```shell
-    docker-compose -f docker-compose-kong.yml -f docker-compose-auth-service.yml down -v
-```
+The custom plugin will intercept these, issue calls to the external auth service (2 endpoints) and both authenticate and authorize the caller - first call to authenticate, second call to authorize

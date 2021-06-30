@@ -1,5 +1,7 @@
 ## Introduction
 
+Update .env with Kong EE License (If it is there), Kong version and Postgres version
+
 Start Kong and Database containers using docker-compose, before docker-compose up, we need to run database migrations
 
     docker-compose run kong kong migrations bootstrap

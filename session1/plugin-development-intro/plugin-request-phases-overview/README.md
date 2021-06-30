@@ -9,10 +9,26 @@ Clone the Kong plugin template: https://github.com/Kong/kong-plugin.git
     cd kong-plugin
 ```
 
+### Dependency defaults
+
+Update `.pongo/pongorc` file to disable cassandra
+
+```shell
+--no-cassandra
+```
+
 ## Bring up pongo dependencies
 
 ```shell
 pongo up
+```
+
+To Specify different versions of the dependencies or image or license_data
+
+```shell
+KONG_VERSION=1.3.x pongo up
+POSTGRES=10 KONG_IMAGE=kong-ee pongo up
+POSTGRES=10 KONG_LICENSE_DATA=<your_license_data> pongo up
 ```
 
 ## Expose services

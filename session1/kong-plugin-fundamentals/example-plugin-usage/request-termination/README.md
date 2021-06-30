@@ -1,5 +1,7 @@
 ## Introduction
 
+Update .env with Kong EE License (If it is there), Kong version and Postgres version
+
 Start Kong and Database containers using docker-compose, before docker-compose up, we need to run database migrations
 
     docker-compose run kong kong migrations bootstrap
@@ -26,6 +28,7 @@ Start Kong and Database containers using docker-compose, before docker-compose u
     http -f :8001/routes/terminate-route/plugins name=request-termination config.status_code=403 config.message="So long and thanks for all the fish!"
 
 This will enable request termination plugin
+For available configuration values please check https://docs.konghq.com/hub/kong-inc/request-termination/
 
 ## Test
 

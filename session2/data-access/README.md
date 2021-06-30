@@ -1,27 +1,24 @@
-## Introduction
-
-Prior to this exercise, it is assumed you have setup Pongo
-
-Clone the Kong plugin template: https://github.com/Kong/kong-plugin.git
-
-```shell
-    git clone https://github.com/Kong/kong-plugin.git
-    cd kong-plugin
-```
-
-## bring up pongo dependencies
+## Bring up pongo dependencies
 
 ```shell
 pongo up
 ```
 
-## expose services
+To specify different versions of the dependencies or image or license_data
+
+```shell
+KONG_VERSION=1.3.x pongo up
+POSTGRES=10 KONG_IMAGE=kong-ee pongo up
+POSTGRES=10 KONG_LICENSE_DATA=<your_license_data> pongo up
+```
+
+## Expose services
 
 ```shell
 pongo expose
 ```
 
-## create a Kong container and attach a shell
+## Create a Kong container and attach a shell
 
 ```shell
 pongo shell
@@ -29,7 +26,7 @@ pongo shell
 
 The following commands should be run from within the Kong shell
 
-## boostrap the database
+## Boostrap the database
 
 ```shell
 kong migrations bootstrap --force
