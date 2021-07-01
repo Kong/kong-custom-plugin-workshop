@@ -228,5 +228,13 @@ is equivalent to
 
 See pongo expose --help for the ports.
 
+## Cleanup
+
+To clean up, run
+
+```shell
+pongo down
+```
+
 For latest information refer pango repo
 https://github.com/Kong/kong-pongo/
