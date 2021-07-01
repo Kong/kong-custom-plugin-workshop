@@ -1,3 +1,9 @@
+### Navigate to the plugin directory
+
+```shell
+cd kong-plugin
+```
+
 ### Dependency defaults
 
 Update `.pongo/pongorc` file to disable cassandra
