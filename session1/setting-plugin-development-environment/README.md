@@ -46,7 +46,7 @@ REDIS the version of the Redis dependency to use (default 5.0.4)
 
 ```shell
 pongo run
-KONG_VERSION=1.3.x pongo run -v -o gtest ./spec/02-access_spec.lua
+KONG_VERSION=1.3.x pongo run -v -o gtest ./spec/myplugin/02-access_spec.lua
 POSTGRES=10 KONG_VERSION=2.3.x pongo run
 pongo down
 ```
