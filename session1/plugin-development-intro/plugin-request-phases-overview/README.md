@@ -13,7 +13,7 @@ Below commands needs to be running inside plugin folder
 
 ### Dependency defaults
 
-Update `.pongo/pongorc` to disable cassandra if not required
+Update `.pongo/pongorc` to disable cassandra if not required as a datastore (postgres is enabled by default)
 
 ```shell
 --no-cassandra
