@@ -2,7 +2,7 @@
 
 Prior to this exercise, it is assumed you have setup Pongo
 
-Clone the Kong plugin template: https://github.com/Kong/kong-plugin.git
+Clone the Kong plugin template if not present: https://github.com/Kong/kong-plugin.git
 
 ```shell
     git clone https://github.com/Kong/kong-plugin.git
@@ -13,7 +13,7 @@ Below commands needs to be running inside plugin folder
 
 ### Dependency defaults
 
-Update `.pongo/pongorc` to disable cassandra
+Update `.pongo/pongorc` to disable cassandra if not required
 
 ```shell
 --no-cassandra
