@@ -11,7 +11,7 @@ Tools Pongo needs to run:
   ```
 - depending on your environment you should set some [environment variables](#configuration).
 
-## Clone kong plugin template
+## Clone kong plugin template (if not already present)
 
 ```shell
     git clone https://github.com/Kong/kong-plugin
