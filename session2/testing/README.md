@@ -12,6 +12,14 @@ pongo run
 KONG_VERSION=2.3.x pongo run
 ```
 
+### Dependencies
+
+Update `.pongo/pongorc` file inside plugin folder to disable cassandra
+
+```shell
+--no-cassandra
+```
+
 ### Run a specific test:
 ```shell
 KONG_VERSION=1.3.x pongo run -v -o gtest ./spec/02-access_spec.lua
