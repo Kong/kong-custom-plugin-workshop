@@ -1,4 +1,7 @@
 ## Problem Statement
 
-1. Update the Kong plugin template to add authentication url in configuration
-2. Update the plugin code to send GET request to authentication url and depending on the response of the authentication request, allow or deny the original request
+Build a custom plugin that reaches out to an external service for each API call to the plugin
+The external service URL is provided as a plugin configuration
+- If the external service returns a 200OK, the plugin allows the request to go through to the upstream
+- If not, the plugin returns a 403 to the API caller
+
