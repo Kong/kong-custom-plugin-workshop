@@ -22,5 +22,5 @@ Update `.pongo/pongorc` file inside plugin folder to disable cassandra
 
 ### Run a specific test:
 ```shell
-KONG_VERSION=1.3.x pongo run -v -o gtest ./spec/02-access_spec.lua
+KONG_VERSION=1.3.x pongo run -v -o gtest ./spec/myplugin/02-access_spec.lua
 ```
