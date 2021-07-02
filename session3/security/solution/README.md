@@ -41,7 +41,7 @@ http -f POST :8001/services/example-service/plugins name=myplugin
 ## In another terminal, open the logs of the auth-service container to view the calls from the Kong plugin
 
 ```shell
-docker logs <container-name> -f
+docker-compose -f docker-compose-kong.yml -f docker-compose-auth-service.yml logs -f auth-service
 ```
 
 ## Test 1 - Specify a valid authorization token and customerId:
@@ -115,6 +115,7 @@ Authorization Failed
 
 
 ```
+
 ## Test 3 - Specify an invalid authorization token and valid customerId:
 
 ```shell
