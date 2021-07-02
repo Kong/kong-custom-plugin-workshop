@@ -5,6 +5,12 @@
     cd kong-plugin
 ```
 
+### Start dependencies
+
+```shell
+pongo up
+```
+
 ### Run all tests
 
 ```shell
