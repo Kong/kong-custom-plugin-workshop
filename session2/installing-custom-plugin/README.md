@@ -34,13 +34,13 @@ http POST :8001/services/example-service/routes name=example-route paths:='["/ec
 ## Add Plugin to the Service
 
 ```shell
-http -f POST :8001/services/example-service/plugins name=myplugin
+http -f :8001/services/example-service/plugins name=myplugin config.remove_request_headers=accept config.remove_request_headers=accept-encoding
 ```
 
 ## Test
 
 ```shell
-http :8000/echo/anything custId==200 a==100
+http :8000/echo/anything
 ```
 
 Response:
@@ -50,88 +50,35 @@ HTTP/1.1 200 OK
 Access-Control-Allow-Credentials: true
 Access-Control-Allow-Origin: *
 Connection: keep-alive
-Content-Length: 570
+Content-Length: 448
 Content-Type: application/json
-Date: Wed, 30 Jun 2021 07:44:34 GMT
+Date: Wed, 30 Jun 2021 07:28:16 GMT
 Server: gunicorn/19.9.0
-Via: kong/2.3.3.2-enterprise-edition
-X-Kong-Proxy-Latency: 154
-X-Kong-Upstream-Latency: 569
+Via: kong/2.4.1
+X-Kong-Proxy-Latency: 95
+X-Kong-Upstream-Latency: 605
 
 {
-    "args": {
-        "a": "100",
-        "custId": "200"
-    },
+    "args": {},
     "data": "",
     "files": {},
     "form": {},
     "headers": {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
         "Host": "httpbin.org",
-        "User-Agent": "HTTPie/2.3.0",
-        "X-Amzn-Trace-Id": "Root=1-60dc20e2-311c114e7c64891b5fb1e2fc",
+        "User-Agent": "HTTPie/1.0.3",
+        "X-Amzn-Trace-Id": "Root=1-60dc1d10-242220940c8f35971d00d4a3",
         "X-Forwarded-Host": "localhost",
         "X-Forwarded-Path": "/echo/anything",
         "X-Forwarded-Prefix": "/echo"
     },
     "json": null,
     "method": "GET",
-    "origin": "172.31.0.1, 223.196.169.116",
-    "url": "http://localhost/anything?custId=200&a=100"
+    "origin": "127.0.0.1, 223.196.168.24",
+    "url": "http://localhost/anything"
 }
 
 
 
-```
-
-```shell
-http :8000/echo/anything a==200 custId=200 another=abc
-```
-
-Response:
-
-```shell
-HTTP/1.1 200 OK
-Access-Control-Allow-Credentials: true
-Access-Control-Allow-Origin: *
-Connection: keep-alive
-Content-Length: 718
-Content-Type: application/json
-Date: Wed, 30 Jun 2021 07:45:09 GMT
-Server: gunicorn/19.9.0
-Via: kong/2.3.3.2-enterprise-edition
-X-Kong-Proxy-Latency: 43
-X-Kong-Upstream-Latency: 605
-
-{
-    "args": {
-        "a": "200"
-    },
-    "data": "{\"custId\": \"200\", \"another\": \"abc\"}",
-    "files": {},
-    "form": {},
-    "headers": {
-        "Accept": "application/json, */*;q=0.5",
-        "Accept-Encoding": "gzip, deflate",
-        "Content-Length": "35",
-        "Content-Type": "application/json",
-        "Host": "httpbin.org",
-        "User-Agent": "HTTPie/2.3.0",
-        "X-Amzn-Trace-Id": "Root=1-60dc2105-4f65ca6a78331424491a3ff1",
-        "X-Forwarded-Host": "localhost",
-        "X-Forwarded-Path": "/echo/anything",
-        "X-Forwarded-Prefix": "/echo"
-    },
-    "json": {
-        "another": "abc",
-        "custId": "200"
-    },
-    "method": "POST",
-    "origin": "172.31.0.1, 223.196.168.24",
-    "url": "http://localhost/anything?a=200"
-}
 
 ```
 
