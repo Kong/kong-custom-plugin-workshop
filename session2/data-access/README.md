@@ -1,3 +1,3 @@
 ## Problem Statement
 
-1. Update the plugin code to retrieve both services and routes from the database and send them in response
+Write a smimple plugin to query to Kong database - Update the plugin template to retrieve both Kong services and routes from the Kong database, and return them in the API response
