@@ -12,6 +12,6 @@ services:
       - CUSTOMERS=customer1,customer2,customer3
     ports:
       - 3000:3000
-networks:
-  security_kong_network:
-    external: true
+# networks:
+#   security_kong_network:
+#     external: true
