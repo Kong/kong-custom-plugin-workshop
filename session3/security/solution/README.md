@@ -38,7 +38,13 @@ http POST :8001/services/example-service/routes name=example-route paths:='["/ec
 http -f POST :8001/services/example-service/plugins name=myplugin
 ```
 
-## Test
+## In another terminal, open the logs of the auth-service container to view the calls from the Kong plugin
+
+```shell
+docker logs <container-name> -f
+```
+
+## Test 1 - Specify a valid authorization token and customerId:
 
 ```shell
 http :8000/echo/anything Authorization:token1 custId==customer1
@@ -88,6 +94,8 @@ X-Kong-Upstream-Latency: 519
 
 ```
 
+## Test 2 - Specify a valid authorization token and invalid customerId:
+
 ```shell
 http :8000/echo/anything Authorization:token2 custId==customer5
 ```
@@ -107,6 +115,7 @@ Authorization Failed
 
 
 ```
+## Test 3 - Specify an invalid authorization token and valid customerId:
 
 ```shell
 http :8000/echo/anything Authorization:token5 custId==customer3
