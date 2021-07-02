@@ -14,9 +14,10 @@ docker-compose -f docker-compose-kong.yml -f docker-compose-auth-service.yml up 
 ```shell
 docker ps
 
-CONTAINER ID        IMAGE                                    COMMAND             CREATED             STATUS              PORTS                     NAMES
-be4733068e81   kong/kong-gateway:2.3.3.2-alpine   "/docker-entrypoint.…"   4 seconds ago    Up 2 seconds (healthy)    0.0.0.0:8000-8004->8000-8004/tcp, :::8000-8004->8000-8004/tcp, 0.0.0.0:8443-8445->8443-8445/tcp, :::8443-8445->8443-8445/tcp, 8446-8447/tcp   kong
-525c3dc73b92   postgres:13-alpine                 "docker-entrypoint.s…"   12 seconds ago   Up 11 seconds (healthy)   5432 tcp                                                                                                                                      kong-database
+CONTAINER ID   IMAGE                              COMMAND                  CREATED              STATUS                        PORTS                                                                                                                                         NAMES
+ff9461ad3c04   auth-service                       "docker-entrypoint.s…"   9 seconds ago        Up 8 seconds                  0.0.0.0:3000->3000/tcp, :::3000->3000/tcp                                                                                                     solution_auth-service_1
+436a20d1c0f7   kong/kong-gateway:2.3.3.1-alpine   "/docker-entrypoint.…"   9 seconds ago        Up 8 seconds (healthy)        0.0.0.0:8000-8004->8000-8004/tcp, :::8000-8004->8000-8004/tcp, 0.0.0.0:8443-8445->8443-8445/tcp, :::8443-8445->8443-8445/tcp, 8446-8447/tcp   kong
+c0e510fe82cc   postgres:9.5-alpine                "docker-entrypoint.s…"   About a minute ago   Up About a minute (healthy)   5432/tcp                                                                                                                                      kong-database
 ```
 
 ## Add a service
@@ -37,7 +38,13 @@ http POST :8001/services/example-service/routes name=example-route paths:='["/ec
 http -f POST :8001/services/example-service/plugins name=myplugin
 ```
 
-## Test
+## In another terminal, open the logs of the auth-service container to view the calls from the Kong plugin
+
+```shell
+docker logs <container-name> -f
+```
+
+## Test 1 - Specify a valid authorization token and customerId:
 
 ```shell
 http :8000/echo/anything Authorization:token1 custId==customer1
@@ -87,6 +94,8 @@ X-Kong-Upstream-Latency: 519
 
 ```
 
+## Test 2 - Specify a valid authorization token and invalid customerId:
+
 ```shell
 http :8000/echo/anything Authorization:token2 custId==customer5
 ```
@@ -106,6 +115,7 @@ Authorization Failed
 
 
 ```
+## Test 3 - Specify an invalid authorization token and valid customerId:
 
 ```shell
 http :8000/echo/anything Authorization:token5 custId==customer3
