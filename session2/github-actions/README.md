@@ -9,7 +9,7 @@ Click "Fork" in top right corner of this repo
 ![](assets/fork-repo.png)
 
 
-## Add license data as GitHub secret
+## Add license data as GitHub secret (Optional)
 
 Click "Setting" in your forked repo
 ![](assets/setting.png)
@@ -19,6 +19,8 @@ Click "Secrets" in sidebar then click "New repository secret"
 
 Put name as "KONG_LICENSE_DATA" and value as your own license data. Then click "Add secret"
 ![](assets/add-secret.png)
+
+Comment line 17 and uncomment line 18 & 19.
 
 ## Run workflow
 

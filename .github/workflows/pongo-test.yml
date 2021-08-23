@@ -14,8 +14,9 @@ on:
   workflow_dispatch:
 
 env:
-  KONG_VERSION: 2.4.1.x
-  KONG_LICENSE_DATA: ${{ secrets.KONG_LICENSE_DATA }}
+  KONG_VERSION: 2.4.1
+  # KONG_VERSION: 2.4.1.x
+  # KONG_LICENSE_DATA: ${{ secrets.KONG_LICENSE_DATA }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
