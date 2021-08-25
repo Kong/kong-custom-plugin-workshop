@@ -1,5 +1,54 @@
 ## Introduction
 
+This lab is an example of using custom plugin in Kong EE dbless deployment.
+
+The plugin will be  installed using the same method for the Kong EE DB mode deployment. The lua files for the plugin will be mounted in the Kong EE container, and the files will be included in `KONG_LUA_PACKAGE_PATH`. 
+
+### Kong Declarative Config
+
+Kong declarative configuration file,  will contain the settings for all desired entities in a single file, and once that file is loaded into Kong, it replaces the entire configuration. Even for custom plugin configuration, it needs to be declared in the decalarative configuration file.
+
+For this lab, 2 declarative configuration files is provided in `dbless_config` directory.
+
+1. `kong.yaml` = service,route
+
+```yaml
+_format_version: "2.1"
+_transform: true
+
+services:
+- name: example-service
+  url: http://httpbin.org
+  routes:
+  - name: example.route
+    paths:
+    - /echo
+```
+
+
+2. `kong_with_myplugin.yaml` = service,route,custom plugin config
+
+```yaml
+_format_version: "2.1"
+_transform: true
+
+services:
+- name: example-service
+  url: http://httpbin.org
+  plugins:
+  - name: myplugin
+    config:
+     remove_request_headers: 
+       - accept
+       - accept-encoding
+  routes:
+  - name: example.route
+    paths:
+    - /echo
+```
+
+## Starting up lab environment
+
 1. Update .env with Kong EE License (If required), Kong version 
 
 2. Set up `KONG_DECLARATIVE_CONFIG` in `docker-compose.yml` to `kong.yaml`. Comment the line :
