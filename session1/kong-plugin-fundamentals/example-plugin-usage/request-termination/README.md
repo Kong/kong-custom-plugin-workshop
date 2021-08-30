@@ -5,7 +5,7 @@ Update .env with Kong EE License (If required), Kong version and Postgres versio
 Modify KONG_PORTAL_GUI_URL and KONG_ADMIN_GUI_URL to your host IP if using cloud VM instead of localhost
 
 ```
-sed -i 's/localhost/52.163.124.93/g' docker-compose.yml
+sed -i 's/localhost/<Your Host IP>/g' docker-compose.yml
 ```
 
 Start Kong and Database containers using docker-compose, before docker-compose up, we need to run database migrations
