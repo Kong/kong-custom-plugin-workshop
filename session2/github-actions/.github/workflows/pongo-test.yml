@@ -48,7 +48,7 @@ jobs:
       - name: Make rock
         run: |
           cd session2/github-actions
-          luarocks make --pack-binary-rock
+          pongo pack
           
       # Upload Artifact to GitHub
       - name: Upload a Build Artifact
