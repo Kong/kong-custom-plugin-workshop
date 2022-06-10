@@ -31,6 +31,7 @@ function plugin:init_worker()
 
   -- your custom code here
   kong.log.debug("saying hi from the 'init_worker' handler")
+  kong.log.debug("saying Deepak from the 'init_worker' ")
 
 end --]]
 
@@ -45,6 +46,7 @@ function plugin:certificate(plugin_conf)
   -- your custom code here
   kong.log.debug("saying hi from the 'certificate' handler")
 
+
 end --]]
 
 
@@ -57,7 +59,7 @@ function plugin:rewrite(plugin_conf)
 
   -- your custom code here
   kong.log.debug("saying hi from the 'rewrite' handler")
-
+  
 end --]]
 
 
