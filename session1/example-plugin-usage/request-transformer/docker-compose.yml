@@ -1,0 +1,71 @@
+x-kong-db-config: &kong-db-config
+  KONG_DATABASE: postgres
+  KONG_PG_HOST: ${KONG_PG_HOST:-kong-database}
+  KONG_PG_PORT: 5432
+  KONG_PG_DATABASE: ${POSTGRES_DB:-kong}
+  KONG_PG_USER: ${POSTGRES_USER:-kong}
+  KONG_PG_PASSWORD: ${POSTGRES_PASSWORD:-kong}
+
+services:
+  kong-database:
+    image: postgres:${POSTGRES_VERSION:-latest}
+    container_name: kong-database
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-kong}
+      - POSTGRES_DB=${POSTGRES_DB:-kong}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-kong}
+    restart: always
+    networks:
+      - kong-training
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+  kong-migrations:
+    image: kong/kong-gateway:${KONG_VERSION:-latest}
+    command: kong migrations bootstrap
+    depends_on:
+      kong-database:
+        condition: service_healthy
+    environment:
+      <<: *kong-db-config
+      KONG_PASSWORD: ${ADMIN_USER_PASSWORD:-kong}
+    networks:
+      - kong-training
+  kong:
+    depends_on:
+      kong-database:
+        condition: service_healthy
+      kong-migrations:
+        condition: service_completed_successfully
+    image: kong/kong-gateway:${KONG_VERSION:-latest}
+    container_name: kong
+    restart: always
+    environment:
+      <<: *kong-db-config
+      KONG_ADMIN_GUI_LISTEN: 0.0.0.0:8002, 0.0.0.0:8445 ssl
+      KONG_ADMIN_GUI_URL: http://localhost:8002
+      KONG_ADMIN_LISTEN: ${KONG_ADMIN_LISTEN:-127.0.0.1:8001}
+      KONG_PROXY_LISTEN: ${KONG_PROXY_LISTEN:-0.0.0.0:8000, 0.0.0.0:8443 ssl http2}
+      KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
+      KONG_LOG_LEVEL: info
+      KONG_PLUGINS: bundled
+    networks:
+      - kong-training
+    ports:
+      - 8000:8000
+      - 8001:8001
+      - 8002:8002
+      - 8004:8004
+      - 8443:8443
+      - 8444:8444
+      - 8445:8445
+    healthcheck:
+      test: ["CMD", "kong", "health"]
+      interval: 1s
+      timeout: 4s
+      retries: 5
+
+networks:
+  kong-training:

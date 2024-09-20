@@ -1,23 +1,21 @@
 ## Introduction
 
+If you have a license file `license.json` and you want to use enterprise image, store the licence to environment variable with below command.
+
+```bash
+export KONG_LICENSE_DATA=$(cat license.json)
+```
+
 Prior to this exercise, it is assumed you have setup Pongo
 
 Clone the Kong plugin template if not present: https://github.com/Kong/kong-plugin.git
 
 ```shell
-    git clone https://github.com/Kong/kong-plugin.git
-    cd kong-plugin
+git clone https://github.com/Kong/kong-plugin.git
+cd kong-plugin
 ```
 
 Below commands needs to be running inside plugin folder
-
-### Dependency defaults
-
-Update `.pongo/pongorc` to disable cassandra if not required as a datastore (postgres is enabled by default)
-
-```shell
---no-cassandra
-```
 
 ## Bring up pongo dependencies
 
@@ -28,9 +26,9 @@ pongo up
 To specify different versions of the dependencies or image or license_data
 
 ```shell
-KONG_VERSION=2.3.x pongo up
-POSTGRES=10 KONG_VERSION=2.3.3.x pongo up
-POSTGRES=10 KONG_LICENSE_DATA=<your_license_data> pongo up
+KONG_VERSION=3.4.x pongo up
+POSTGRES=15 KONG_VERSION=3.4.x pongo up
+POSTGRES=15 KONG_VERSION=3.4.3.x KONG_LICENSE_DATA=$KONG_LICENSE_DATA pongo up
 ```
 
 ## Expose services
@@ -57,19 +55,24 @@ kong start
 ## Add a service
 
 ```shell
-http POST :8001/services name=example-service url=http://httpbin.org
+http POST :8001/services \
+    name=example-service \
+    url=http://httpbin.org
 ```
 
 ## Add a Route to the Service
 
 ```shell
-http POST :8001/services/example-service/routes name=example-route paths:='["/echo"]'
+http POST :8001/services/example-service/routes \
+    name=example-route \
+    paths:='["/echo"]'
 ```
 
 ## Add MyPlugin to the Service
 
 ```shell
-http -f :8001/services/example-service/plugins name=myplugin
+http -f :8001/services/example-service/plugins \
+    name=myplugin
 ```
 
 ## Test
@@ -86,36 +89,37 @@ Access-Control-Allow-Credentials: true
 Access-Control-Allow-Origin: *
 Bye-World: this is on the response
 Connection: keep-alive
-Content-Length: 556
+Content-Length: 622
 Content-Type: application/json
-Date: Wed, 30 Jun 2021 07:32:51 GMT
+Date: Fri, 20 Sep 2024 04:42:18 GMT
 Server: gunicorn/19.9.0
-Via: kong/2.4.1
-X-Kong-Proxy-Latency: 140
-X-Kong-Upstream-Latency: 568
+Via: kong/3.4.3.12-enterprise-edition
+X-Kong-Proxy-Latency: 54
+X-Kong-Request-Id: a4a1a535066728190c24de5049cd6e29
+X-Kong-Upstream-Latency: 424
 
 {
-    "args": {},
-    "data": "",
-    "files": {},
-    "form": {},
-    "headers": {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
-        "Hello-World": "this is on a request",
-        "Host": "httpbin.org",
-        "User-Agent": "HTTPie/1.0.3",
-        "X-Amzn-Trace-Id": "Root=1-60dc1e23-332e478c63f3ca0551ffb795",
-        "X-Forwarded-Host": "localhost",
-        "X-Forwarded-Path": "/echo/anything",
-        "X-Forwarded-Prefix": "/echo"
-    },
-    "json": null,
-    "method": "GET",
-    "origin": "127.0.0.1, 223.196.173.146",
-    "url": "http://localhost/anything"
+  "args": {},
+  "data": "",
+  "files": {},
+  "form": {},
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Hello-World": "this is on a request",
+    "Host": "httpbin.org",
+    "User-Agent": "HTTPie/3.2.3",
+    "X-Amzn-Trace-Id": "Root=1-66ecfd2a-72dd15445c2c0eda39f86220",
+    "X-Forwarded-Host": "localhost",
+    "X-Forwarded-Path": "/echo/anything",
+    "X-Forwarded-Prefix": "/echo",
+    "X-Kong-Request-Id": "a4a1a535066728190c24de5049cd6e29"
+  },
+  "json": null,
+  "method": "GET",
+  "origin": "172.20.0.3",
+  "url": "http://localhost/anything"
 }
-
 ```
 
 # Add a log entry to each phase
@@ -129,8 +133,7 @@ kong.log.debug(" In phase <name of phase>")
 Tail the kongs logs in a separate window, run
 
 ```shell
-cd kong-plugin
-tail -f servroot/logs/error.log
+pongo tail
 ```
 
 # Go back to the Kong shell and reload Kong to pick up latest plugin changes
