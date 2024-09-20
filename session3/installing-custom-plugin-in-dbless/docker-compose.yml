@@ -1,0 +1,38 @@
+services:
+  kong:
+    image: kong/kong-gateway:${KONG_VERSION:-latest}
+    container_name: kong
+    restart: always
+    environment:
+      KONG_DATABASE: off
+      KONG_DECLARATIVE_CONFIG: /opt/conf/dbless_config/kong.yaml #config without `myplugin`
+      # KONG_DECLARATIVE_CONFIG: /opt/conf/dbless_config/kong_with_myplugin.yaml #config with `myplugin`
+      KONG_ADMIN_GUI_LISTEN: 0.0.0.0:8002, 0.0.0.0:8445 ssl
+      KONG_ADMIN_GUI_URL: http://localhost:8002
+      KONG_ADMIN_LISTEN: ${KONG_ADMIN_LISTEN:-127.0.0.1:8001}
+      KONG_PROXY_LISTEN: ${KONG_PROXY_LISTEN:-0.0.0.0:8000, 0.0.0.0:8443 ssl http2}
+      KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
+      KONG_LOG_LEVEL: info
+      KONG_LUA_PACKAGE_PATH: /opt/conf/?.lua;
+      KONG_PLUGINS: bundled,myplugin
+    volumes:
+      - ./kong-plugin:/opt/conf/
+      - ./dbless_config:/opt/conf/dbless_config
+    working_dir: /opt/conf
+    networks:
+      - kong-training
+    ports:
+      - 8000:8000
+      - 8001:8001
+      - 8002:8002
+      - 8443:8443
+      - 8444:8444
+      - 8445:8445
+    healthcheck:
+      test: ["CMD", "kong", "health"]
+      interval: 1s
+      timeout: 4s
+      retries: 5
+
+networks:
+  kong-training:

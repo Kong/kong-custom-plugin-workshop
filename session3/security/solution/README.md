@@ -1,12 +1,17 @@
 ## Introduction
 
-Update .env with Kong EE License (If required), Kong version and Postgres version
+If you have a license file `license.json`, store the licence to environment variable with below command.
 
-Start Kong, Database and Auth Service containers using docker-compose, before docker-compose up, we need to run database migrations
+```bash
+export KONG_LICENSE_DATA=$(cat license.json)
+```
+
+Update .env Kong version and Postgres version
+
+Start Kong, Database and Auth Service containers using docker compose.
 
 ```shell
-docker-compose -f docker-compose-kong.yml run kong kong migrations bootstrap
-docker-compose -f docker-compose-kong.yml -f docker-compose-auth-service.yml up -d --build
+docker compose -f docker-compose-kong.yml -f docker-compose-auth-service.yml up -d --build
 ```
 
 ## Verify whether containers are up or not
@@ -23,19 +28,23 @@ c0e510fe82cc   postgres:9.5-alpine                "docker-entrypoint.s…"   Abo
 ## Add a service
 
 ```shell
-http POST :8001/services name=example-service url=http://httpbin.org
+http POST :8001/services name=example-service \
+    url=http://httpbin.org
 ```
 
 ## Add a Route to the Service
 
 ```shell
-http POST :8001/services/example-service/routes name=example-route paths:='["/echo"]'
+http POST :8001/services/example-service/routes \
+    name=example-route \
+    paths:='["/echo"]'
 ```
 
 ## Add Plugin to the Service
 
 ```shell
-http -f POST :8001/services/example-service/plugins name=myplugin
+http -f POST :8001/services/example-service/plugins \
+    name=myplugin
 ```
 
 ## In another terminal, open the logs of the auth-service container to view the calls from the Kong plugin
@@ -56,42 +65,40 @@ Response:
 HTTP/1.1 200 OK
 Access-Control-Allow-Credentials: true
 Access-Control-Allow-Origin: *
-Bye-World: this is on the response
 Connection: keep-alive
-Content-Length: 636
+Content-Length: 658
 Content-Type: application/json
-Date: Wed, 30 Jun 2021 07:58:56 GMT
+Date: Fri, 20 Sep 2024 13:33:07 GMT
 Server: gunicorn/19.9.0
-Via: kong/2.3.3.2-enterprise-edition
-X-Kong-Proxy-Latency: 1677
-X-Kong-Upstream-Latency: 519
+Via: kong/3.4.3.12-enterprise-edition
+X-Kong-Proxy-Latency: 479
+X-Kong-Request-Id: 53ef646881d2810d8b671641e86afd2f
+X-Kong-Upstream-Latency: 423
 
 {
-    "args": {
-        "custId": "customer1"
-    },
-    "data": "",
-    "files": {},
-    "form": {},
-    "headers": {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
-        "Authorization": "token1",
-        "Hello-World": "this is on a request",
-        "Host": "httpbin.org",
-        "User-Agent": "HTTPie/2.3.0",
-        "X-Amzn-Trace-Id": "Root=1-60dc2440-7993f28606c7ce4b2a2cff3a",
-        "X-Forwarded-Host": "localhost",
-        "X-Forwarded-Path": "/echo/anything",
-        "X-Forwarded-Prefix": "/echo"
-    },
-    "json": null,
-    "method": "GET",
-    "origin": "192.168.64.1, 223.196.172.10",
-    "url": "http://localhost/anything?custId=customer1"
+  "args": {
+    "custId": "customer1"
+  },
+  "data": "",
+  "files": {},
+  "form": {},
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "token1",
+    "Host": "httpbin.org",
+    "User-Agent": "HTTPie/3.2.3",
+    "X-Amzn-Trace-Id": "Root=1-66ed7993-6f9cc29b543ae9d06544a0f6",
+    "X-Forwarded-Host": "localhost",
+    "X-Forwarded-Path": "/echo/anything",
+    "X-Forwarded-Prefix": "/echo",
+    "X-Kong-Request-Id": "53ef646881d2810d8b671641e86afd2f"
+  },
+  "json": null,
+  "method": "GET",
+  "origin": "192.168.65.1",
+  "url": "http://localhost/anything?custId=customer1"
 }
-
-
 ```
 
 ## Test 2 - Specify a valid authorization token and invalid customerId:
@@ -104,16 +111,14 @@ Response:
 
 ```shell
 HTTP/1.1 403 Forbidden
-Bye-World: this is on the response
 Connection: keep-alive
 Content-Length: 20
-Date: Wed, 30 Jun 2021 07:59:35 GMT
-Server: kong/2.3.3.2-enterprise-edition
-X-Kong-Response-Latency: 4
+Date: Fri, 20 Sep 2024 13:33:41 GMT
+Server: kong/3.4.3.12-enterprise-edition
+X-Kong-Request-Id: 47e547615ed6150bac54cc7b19df8419
+X-Kong-Response-Latency: 6
 
 Authorization Failed
-
-
 ```
 
 ## Test 3 - Specify an invalid authorization token and valid customerId:
@@ -126,20 +131,18 @@ Response:
 
 ```shell
 HTTP/1.1 403 Forbidden
-Bye-World: this is on the response
 Connection: keep-alive
 Content-Length: 21
-Date: Wed, 30 Jun 2021 08:00:04 GMT
-Server: kong/2.3.3.2-enterprise-edition
+Date: Fri, 20 Sep 2024 13:33:50 GMT
+Server: kong/3.4.3.12-enterprise-edition
+X-Kong-Request-Id: c45c6208e6cd721659c50843c9f83f22
 X-Kong-Response-Latency: 2
 
 Authentication Failed
-
-
 ```
 
 ## Cleanup
 
 ```shell
-docker-compose -f docker-compose-kong.yml -f docker-compose-auth-service.yml down -v
+docker compose -f docker-compose-kong.yml -f docker-compose-auth-service.yml down -v
 ```
