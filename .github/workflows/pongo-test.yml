@@ -46,7 +46,7 @@ jobs:
       # Build artifact
       - name: Make rock
         run: |
-          cd session2/github-actions
+          cd session3/github-actions
           luarocks make --pack-binary-rock
 
       # Upload Artifact to GitHub
@@ -54,4 +54,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: |
-            session2/github-actions/*.rock
+            session3/github-actions/*.rock
