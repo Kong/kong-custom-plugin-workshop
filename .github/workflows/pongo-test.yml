@@ -39,7 +39,7 @@ jobs:
       # Pongo run
       - name: Run Pongo
         run: |
-          cd session2/github-actions
+          cd session3/github-actions
           ../../kong-pongo/pongo.sh lint
           ../../kong-pongo/pongo.sh run
 
