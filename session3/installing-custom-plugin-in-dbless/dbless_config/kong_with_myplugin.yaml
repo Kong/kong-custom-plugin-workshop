@@ -1,0 +1,16 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+- name: example-service
+  url: http://httpbin.org
+  plugins:
+  - name: myplugin
+    config:
+     remove_request_headers:
+       - accept
+       - accept-encoding
+  routes:
+  - name: example.route
+    paths:
+    - /echo

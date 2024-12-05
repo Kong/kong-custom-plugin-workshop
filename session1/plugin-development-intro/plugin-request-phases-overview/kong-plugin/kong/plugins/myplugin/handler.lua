@@ -58,7 +58,7 @@ function plugin:rewrite(plugin_conf)
   -- your custom code here
   kong.log.debug("saying hi from the 'rewrite' handler")
 
-end 
+end
 
 
 
@@ -66,11 +66,11 @@ end
 function plugin:access(plugin_conf)
 
   -- your custom code here
+  kong.log.debug("saying hi from the 'access' handler")
   kong.log.inspect(plugin_conf)   -- check the logs for a pretty-printed config!
   kong.service.request.set_header(plugin_conf.request_header, "this is on a request")
 
 end --]]
-
 
 -- runs in the 'header_filter_by_lua_block'
 function plugin:header_filter(plugin_conf)
@@ -96,7 +96,7 @@ function plugin:log(plugin_conf)
   -- your custom code here
   kong.log.debug("saying hi from the 'log' handler")
 
-end 
+end
 
 
 -- return our plugin object

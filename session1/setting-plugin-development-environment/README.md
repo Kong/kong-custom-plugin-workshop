@@ -9,72 +9,71 @@ Tools Pongo needs to run:
   ```
   brew install coreutils
   ```
-- depending on your environment you should set some [environment variables](#configuration).
+- depending on your environment you should set some [environment variables](#environment-variables).
 
 ## Clone kong plugin template (if not already present)
 
 ```shell
-    git clone https://github.com/Kong/kong-plugin
+git clone https://github.com/Kong/kong-plugin
 ```
 
 ## Download and setup pongo from its Git Repo
 
 ```shell
-    PATH=$PATH:~/.local/bin
-    git clone https://github.com/Kong/kong-pongo.git
-    mkdir -p ~/.local/bin
-    ln -s $(realpath kong-pongo/pongo.sh) ~/.local/bin/pongo
+PATH=$PATH:~/.local/bin
+git clone https://github.com/Kong/kong-pongo.git
+mkdir -p ~/.local/bin
+ln -s $(realpath kong-pongo/pongo.sh) ~/.local/bin/pongo
 ```
 
 ## Environment variables:
 
 ```shell
-KONG_VERSION the specific Kong version to use when building the test image
+KONG_VERSION: the specific Kong version to use when building the test image
 (note that the patch-version can be 'x' to use latest)
 
-KONG_IMAGE the base Kong Docker image to use when building the test image
+KONG_IMAGE: the base Kong Docker image to use when building the test image
 
-KONG_LICENSE_DATA
-set this variable with the Kong Enterprise license data
+KONG_LICENSE_DATA: set this variable with the Kong Enterprise license data
 
-POSTGRES the version of the Postgres dependency to use (default 9.5)
-CASSANDRA the version of the Cassandra dependency to use (default 3.9)
-REDIS the version of the Redis dependency to use (default 5.0.4)
+POSTGRES: the version of the Postgres dependency to use (default 9.5)
+CASSANDRA: the version of the Cassandra dependency to use (default 3.9)
+REDI: the version of the Redis dependency to use (default 5.0.4)
 ```
 
 ### Example usage:
 
 ```shell
 pongo run
-KONG_VERSION=1.3.x pongo run -v -o gtest ./spec/myplugin/02-access_spec.lua
-POSTGRES=10 KONG_VERSION=2.3.x pongo run
+KONG_VERSION=3.4.x pongo run -v -o gtest ./spec/myplugin/02-integration_spec.lua
+POSTGRES=15 KONG_VERSION=3.4.x pongo run
 pongo down
 ```
 
 ## Do a test run
 
 ```shell
-    cd kong-plugin
+cd kong-plugin
 
-    # auto pull and build the test images
-    pongo run
+# auto pull and build the test images
+pongo run
 ```
 
 Some more elaborate examples:
 
 ```shell
-    # Run against a specific version of Kong and pass
-    # a number of Busted options
-    KONG_VERSION=2.3.2 pongo run -v -o gtest ./spec
+# Run against a specific version of Kong and pass
+# a number of Busted options
+KONG_VERSION=3.4.2 pongo run -v -o gtest ./spec
 
-    # Run against the latest patch version of a Kong release using '.x'
-    KONG_VERSION=2.3.x pongo run -v -o gtest ./spec
+# Run against the latest patch version of a Kong release using '.x'
+KONG_VERSION=3.4.x pongo run -v -o gtest ./spec
 ```
 
 The above command (pongo run) will automatically build the test image and start the test environment. When done, the test environment can be torn down by:
 
 ```shell
-    pongo down
+pongo down
 ```
 
 ## Test dependencies
@@ -91,11 +90,6 @@ The available dependencies are:
 
   - Disable it with `--no-postgres`
   - The Postgres version is controlled by the `POSTGRES` environment variable
-
-- **Cassandra** Kong datastore (started by default)
-
-  - Disable it with `--no-cassandra`
-  - The Cassandra version is controlled by the `CASSANDRA` environment variable
 
 - **grpcbin** mock grpc backend
 
@@ -145,10 +139,10 @@ The available dependencies are:
     pongo shell
 
     # connect to httpbin (http), while authenticating
-    http --proxy=http:http://kong:king@squid:3128 --proxy=https:http://kong:king@squid:3128 http://httpbin.org/anything
+    http --proxy=http:http://kong:king@squid:3128 http://httpbin.org/anything
 
     # https also works
-    http --proxy=http:http://kong:king@squid:3128 --proxy=https:http://kong:king@squid:3128 https://httpbin.org/anything
+    http --proxy=https:http://kong:king@squid:3128 https://httpbin.org/anything
 
     # connect unauthenticated to the whitelisted mockbin.org (http)
     http --proxy=http:http://squid:3128 --proxy=https:http://squid:3128 http://mockbin.org/request
@@ -159,10 +153,8 @@ The available dependencies are:
 
 ### Dependency defaults
 
-The defaults do not make sense for every type of plugin and some dependencies
-(Cassandra for example) can slow down the tests. So to override the defaults on
-a per project/plugin basis, a `.pongo/pongorc` file can be added
-to the project.
+The defaults do not make sense for every type of plugin. So to override the defaults on
+a per project/plugin basis, a `.pongo/pongorc` file can be added to the project.
 
 The format of the file is very simple; each line contains 1 commandline option, eg.
 a `.pongo/pongorc` file for a plugin that only needs Postgres and Redis:
@@ -175,9 +167,9 @@ a `.pongo/pongorc` file for a plugin that only needs Postgres and Redis:
 ### Dependency troubleshooting
 
 When dependency containers are causing trouble, the logs can be accessed using
-the `pongo logs` command. This command is the same as `docker-compose logs` except
+the `pongo logs` command. This command is the same as `docker compose logs` except
 that it operates on the Pongo environment specifically. Any additional options
-specified to the command will be passed to the underlying `docker-compose logs`
+specified to the command will be passed to the underlying `docker compose logs`
 command.
 
 Some examples:
@@ -200,7 +192,7 @@ When running the tests, the Kong prefix (or working directory) will be set to ./
 To track the error log (where any print or ngx.log statements will go) you can use the tail command
 
 ```shell
-    pongo tail
+pongo tail
 ```
 
 ## Direct access to service ports
@@ -216,14 +208,14 @@ Since it is technically a "dependency" it can be specified as a dependency as we
 so
 
 ```shell
-    pongo up
-    pongo expose
+pongo up
+pongo expose
 ```
 
 is equivalent to
 
 ```shell
-    pongo up --expose
+pongo up --expose
 ```
 
 See pongo expose --help for the ports.

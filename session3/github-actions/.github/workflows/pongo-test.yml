@@ -14,9 +14,8 @@ on:
   workflow_dispatch:
 
 env:
-  KONG_VERSION: 3.4.2
-  # KONG_VERSION: 3.4.3.x
-  # KONG_LICENSE_DATA: ${{ secrets.KONG_LICENSE_DATA }}
+  KONG_VERSION: 3.4.3.x
+  KONG_LICENSE_DATA: ${{ secrets.KONG_LICENSE_DATA }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -29,6 +28,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+        with:
+          path: plugin
 
       # Get Pongo
       - name: Get Luarocks & Pongo
@@ -39,19 +40,19 @@ jobs:
       # Pongo run
       - name: Run Pongo
         run: |
-          cd session3/github-actions
+          cd session2/github-actions
           ../../kong-pongo/pongo.sh lint
           ../../kong-pongo/pongo.sh run
 
       # Build artifact
       - name: Make rock
         run: |
-          cd session3/github-actions
-          luarocks make --pack-binary-rock
+          cd session2/github-actions
+          pongo pack
 
       # Upload Artifact to GitHub
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4
         with:
           path: |
-            session3/github-actions/*.rock
+            session2/github-actions/*.rock

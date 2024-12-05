@@ -50,11 +50,7 @@ services:
       KONG_PROXY_LISTEN: ${KONG_PROXY_LISTEN:-0.0.0.0:8000, 0.0.0.0:8443 ssl http2}
       KONG_LICENSE_DATA: ${KONG_LICENSE_DATA}
       KONG_LOG_LEVEL: info
-      KONG_PLUGINS: bundled,myplugin
-      AUTHENTICATION_URL: http://auth-service:3000
-      KONG_LUA_PACKAGE_PATH: /opt/conf/?.lua;
-    volumes:
-      - ./kong-plugin:/opt/conf/
+      KONG_PLUGINS: bundled
     networks:
       - kong-training
     ports:
