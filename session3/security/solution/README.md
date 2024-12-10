@@ -130,13 +130,13 @@ http :8000/echo/anything Authorization:token5 custId==customer3
 Response:
 
 ```shell
-HTTP/1.1 403 Forbidden
+HTTP/1.1 401 Unauthorized
 Connection: keep-alive
 Content-Length: 21
-Date: Fri, 20 Sep 2024 13:33:50 GMT
+Date: Tue, 10 Dec 2024 09:18:42 GMT
 Server: kong/3.4.3.12-enterprise-edition
-X-Kong-Request-Id: c45c6208e6cd721659c50843c9f83f22
-X-Kong-Response-Latency: 2
+X-Kong-Request-Id: bdf76e4dcfaa9149e2fb2424ac038901
+X-Kong-Response-Latency: 4
 
 Authentication Failed
 ```

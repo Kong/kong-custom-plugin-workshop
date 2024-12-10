@@ -17,7 +17,7 @@ function plugin:access(plugin_conf)
 
     if not res or res.status ~= 200 then
         kong.log.err("request failed: ", err)
-        return kong.response.exit(403, "Authentication Failed")
+        return kong.response.exit(401, "Authentication Failed")
     end
 
     kong.log.info("query params", kong.request.get_query()['custId'])
