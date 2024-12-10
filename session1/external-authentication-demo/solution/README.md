@@ -16,6 +16,7 @@ KONG_VERSION=3.4.x pongo up
 POSTGRES=15 KONG_VERSION=3.4.x pongo up
 POSTGRES=15 KONG_VERSION=3.4.3.x KONG_LICENSE_DATA=$KONG_LICENSE_DATA pongo up
 ```
+Use these variables for each of the following commands to run pongo against specific versions of Kong or any dependencies
 
 ## Expose services
 
@@ -71,7 +72,7 @@ Verification
 http :8000/echo/anything
 ```
 
-Response:
+Response
 
 ```shell
 HTTP/1.1 200 OK

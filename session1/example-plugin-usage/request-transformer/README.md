@@ -105,6 +105,8 @@ X-Kong-Upstream-Latency: 879
 }
 ```
 
+Send another request:
+
 ```shell
 http :8000/transform/anything \
     a==200 \
