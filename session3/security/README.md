@@ -4,7 +4,7 @@ Custom Authentication Security Lab
 
 Build a  custom plugin that reaches out to an external service for each call to the plugin. The URL for the external service should be provided as a plugin configuration
 
-The external service for authentication will be provided as a docker container
+The external service for authentication is provided as a docker container - refer to the ReadMe within the `auth-service` directory to try it out.
 
 The API caller will specify two parameters with the call
 - A bearer token

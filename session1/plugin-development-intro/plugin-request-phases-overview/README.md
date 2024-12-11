@@ -31,6 +31,8 @@ POSTGRES=15 KONG_VERSION=3.4.x pongo up
 POSTGRES=15 KONG_VERSION=3.4.3.x KONG_LICENSE_DATA=$KONG_LICENSE_DATA pongo up
 ```
 
+Use these variables for each of the following commands to run pongo against specific versions of Kong or any dependencies
+
 ## Expose services
 
 ```shell
@@ -136,7 +138,9 @@ Tail the kongs logs in a separate window, run
 pongo tail
 ```
 
-# Go back to the Kong shell and reload Kong to pick up latest plugin changes
+# Go back to the Kong shell and reload Kong to pick up latest plugin changes 
+
+## In newer versions of Pongo, plugin changes are automatically picked up and a reload is not necessary
 
 ```shell
 kong reload
